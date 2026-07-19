@@ -22,6 +22,8 @@
   }
   </script>
   <link rel="stylesheet" href="css/style.css">
+  <!-- Google AdSense — replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID after approval -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
 </head>
 <body>
 
@@ -461,6 +463,20 @@
       </div>
       <div class="modal-actions" style="margin-top:20px">
         <button class="modal-close" onclick="closeModals()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COOKIE CONSENT BANNER -->
+  <div class="cookie-banner" id="cookie-banner">
+    <div class="cookie-inner">
+      <div class="cookie-text">
+        <strong>We use cookies for ads.</strong> Our partners use cookies to personalize ads and measure performance. By clicking "Accept", you agree to this.
+        <a href="privacy.html">Learn more</a>
+      </div>
+      <div class="cookie-actions">
+        <button class="btn-generate" onclick="acceptCookies()">Accept</button>
+        <button class="modal-close" onclick="declineCookies()">Decline</button>
       </div>
     </div>
   </div>
@@ -1030,6 +1046,41 @@
   })();
 
   updateNav();
+
+  // --- COOKIE CONSENT + AD LOADING ---
+  function getCookieConsent() { return localStorage.getItem('qrstar-cookies'); }
+  function acceptCookies() {
+    localStorage.setItem('qrstar-cookies', 'accepted');
+    document.getElementById('cookie-banner').style.display = 'none';
+    loadAds();
+  }
+  function declineCookies() {
+    localStorage.setItem('qrstar-cookies', 'declined');
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+  function loadAds() {
+    if (getCookieConsent() !== 'accepted') return;
+    var slots = document.querySelectorAll('.ad-slot');
+    slots.forEach(function(slot) {
+      slot.style.display = '';
+      if (!slot.hasAttribute('data-loaded')) {
+        slot.setAttribute('data-loaded', '1');
+        var ins = document.createElement('ins');
+        ins.className = 'adsbygoogle';
+        ins.style.display = 'block';
+        ins.setAttribute('data-ad-client', 'ca-pub-XXXXXXXXXXXXXXXX');
+        ins.setAttribute('data-ad-slot', 'XXXXXXXXXX');
+        ins.setAttribute('data-ad-format', 'auto');
+        ins.setAttribute('data-full-width-responsive', 'true');
+        slot.appendChild(ins);
+        try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+      }
+    });
+  }
+  if (getCookieConsent() === 'accepted') {
+    document.getElementById('cookie-banner').style.display = 'none';
+    loadAds();
+  }
   </script>
 </body>
 </html>

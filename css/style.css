@@ -403,6 +403,27 @@ footer {
 .btn-secondary:hover { border-color: var(--hover-border); color: var(--text); background: var(--hover-bg); }
 .settings-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
+/* COOKIE CONSENT BANNER */
+.cookie-banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 3000;
+  background: #111; border-top: 1px solid var(--border);
+  padding: 16px 24px;
+}
+.cookie-inner {
+  max-width: 860px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+}
+.cookie-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+.cookie-text strong { color: var(--text); }
+.cookie-text a { color: var(--text); text-decoration: underline; }
+.cookie-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.cookie-actions .btn-generate { padding: 7px 16px; font-size: 12px; }
+.cookie-actions .modal-close { padding: 7px 16px; font-size: 12px; }
+@media (max-width: 680px) {
+  .cookie-inner { flex-direction: column; text-align: center; }
+}
+
 /* RESPONSIVE */
 @media (max-width: 680px) {
   .card-body { grid-template-columns: 1fr; }
