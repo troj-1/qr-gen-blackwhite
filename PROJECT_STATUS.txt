@@ -1,0 +1,271 @@
+========================================
+  QR STAR — PROJECT STATUS & DOCUMENTATION
+  Last updated: July 19, 2026
+========================================
+
+----------------------------------------
+  1. PROJECT OVERVIEW
+----------------------------------------
+
+QR Star is a free, browser-based QR code generator website.
+Goal: Make money through Google AdSense (ads) and email list growth.
+Budget: $0. Hosting: GitHub Pages (free).
+No backend — everything is client-side (localStorage).
+
+----------------------------------------
+  2. REPOSITORY & DEPLOYMENT
+----------------------------------------
+
+GitHub repo: https://github.com/troj-1/troj-1.github.io
+GitHub username: troj-1
+Live URL (once Pages is enabled): https://troj-1.github.io/
+
+NOTE: The repo was originally "qr-gen-blackwhite", then renamed
+to "QR-Star", and finally should be renamed to "troj-1.github.io"
+so AdSense accepts the root domain. The user needs to:
+
+1. Go to https://github.com/troj-1/QR-Star/settings
+2. Rename repo to "troj-1.github.io"
+3. Go to Settings → Pages → Enable (main branch, /root)
+4. Site will be live at https://troj-1.github.io/
+5. Apply for AdSense with https://troj-1.github.io/
+
+Local git remote is already set to:
+  https://github.com/troj-1/QR-Star.git
+(Update after rename: git remote set-url origin https://github.com/troj-1/troj-1.github.io.git)
+
+----------------------------------------
+  3. FILE STRUCTURE
+----------------------------------------
+
+qr-gen-blackwhite/          (working directory on user's PC)
+  index.html                Main generator page (1048 lines)
+  about.html                About page
+  contact.html              Contact page + FAQ
+  privacy.html              Privacy Policy (AdSense requirement)
+  terms.html                Terms of Service (AdSense requirement)
+  sitemap.xml               XML sitemap for Google indexing
+  robots.txt                Crawler directives for AdSense/SEO
+  css/
+    style.css               All styles (~400 lines)
+  js/
+    qrcode.min.js           QR code generation library (third-party)
+    backgrounds.js          Animated canvas backgrounds (3 designs)
+
+----------------------------------------
+  4. WHAT'S BUILT (FEATURES)
+----------------------------------------
+
+QR GENERATOR:
+- 14 QR content types: URL, WhatsApp, Instagram, TikTok, YouTube,
+  Text, Email, SMS, vCard, Location, WiFi, PayPal, Bitcoin, Event
+- Type selector card grid with SVG icons, organized by category
+  (Links, Messages, Contact, Network, Payment, Event)
+- 5 module styles: square, rounded, dots, extra-rounded, diamond
+- 3 finder corner styles: square, rounded, dot
+- Custom foreground color, background color, size (200-600px)
+- Border system: enable/disable toggle, color picker, thickness
+  slider (1-50px), 3 border styles (sharp, soft, rounded)
+- Canvas-based rendering — border appears in downloaded PNG
+- Download as PNG, copy to clipboard
+- Animated canvas backgrounds (3 switchable designs)
+
+RENDERING ENGINE (index.html lines ~660-810):
+- Two-pass rendering: Pass 1 draws data modules (skipping finders),
+  Pass 2 draws finder patterns with white separator ring
+- isFinderPattern() uses < 7 boundary (correct 7x7 size)
+- drawSingleModule() handles all 5 module styles
+- drawFinderBlock() handles 3 corner styles (square/rounded/dot)
+- Border drawn as rounded rect on canvas with inner QR area cutout
+- Background fill uses clearRect for transparent corners on
+  rounded borders (fixes the JPEG-looking corner bug)
+
+AUTH SYSTEM (localStorage — no backend):
+- Signup collects: name, email, password, source dropdown, newsletter checkbox
+- Password stored as one-way hash (simple hash, not bcrypt)
+- Session stored in localStorage
+- Login/logout with nav UI update (avatar initial, name display)
+
+RATE LIMITING:
+- 3 QR codes per hour for anonymous users
+- Timestamps stored in localStorage, cleaned hourly
+- Rate limit modal shows value props: unlimited QR codes, history,
+  no ads, data export
+- Usage counter shows "X/3 free QR codes this hour"
+- Persistent usage banner below generator shows remaining count
+
+ANALYTICS:
+- Local event tracking: generate, download, signup events
+- Stored in localStorage, capped at 200 events
+
+HISTORY:
+- Logged-in users: QR history saved per-user in localStorage
+  (key: qrc-hist-{email})
+- History panel slides in from right
+- Click history item to reload QR code
+- Max 50 history items stored
+
+ACCOUNT SETTINGS:
+- Settings modal for logged-in users (name, email readonly)
+- "Export My Data" — downloads JSON with account + history
+- "Delete Account" — removes user + history from localStorage
+- Settings button in nav for logged-in users
+
+COOKIE CONSENT + ADS:
+- GDPR cookie consent banner at bottom of page
+- Accept/Decline buttons, choice saved in localStorage
+- Ad slots (hero + footer) only show after consent
+- AdSense script tag in <head> (commented out, placeholder pub ID)
+- Ad slot divs use data-ad-client/data-ad-slot placeholders
+- robots.txt allows Googlebot and AdsBot-Google
+
+LEGAL PAGES (AdSense requirements):
+- Privacy Policy: data collection, AdSense disclosure, GDPR rights,
+  data deletion instructions
+- Terms of Service: acceptable use, IP rights, liability, QR accuracy
+- Contact page: 3 email cards (general, privacy, support) + 6 FAQs
+- About page: product description, features list, how it works
+- All pages share same dark theme CSS and nav/footer
+
+SEO:
+- Meta tags, Open Graph tags, schema.org structured data
+- Canonical URL, robots meta tag
+- Sitemap.xml with all pages
+- robots.txt
+
+----------------------------------------
+  5. CSS DESIGN SYSTEM
+----------------------------------------
+
+Dark theme (blackwhite version):
+- Background: #0a0a0a
+- Text: #ffffff
+- Text secondary: #666666
+- Border: rgba(255,255,255,0.06)
+- Card bg: rgba(255,255,255,0.03)
+- Radius: 6px
+- Font: system font stack (-apple-system, BlinkMacSystemFont, etc.)
+
+Key CSS classes:
+- .type-grid / .type-card — QR type selector grid
+- .card-body — grid layout (form panel + preview panel)
+- .style-options / .style-opt — module/corner/border style buttons
+- .color-row / .color-pick — color picker row
+- .outline-row / .outline-toggle — checkbox toggle
+- .usage-banner — persistent rate limit banner
+- .cookie-banner — GDPR consent
+- .modal-overlay / .modal — modals
+- .history-panel — slide-in history
+- .legal-page / .legal-content — legal page styles
+- .contact-grid / .contact-card — contact page grid
+- .footer-links — footer navigation
+
+----------------------------------------
+  6. KEY JS FUNCTIONS
+----------------------------------------
+
+Core:
+  switchType(type)           — switches QR type, shows correct form
+  setModuleStyle(s)          — changes module rendering style
+  setCornerStyle(s)          — changes finder corner style
+  setBorderStyle(s)          — changes border corner style
+  toggleOutline()            — enables/disables border controls
+  updateThickness()          — updates thickness label
+  livePreview()              — re-renders QR if already generated
+  getPayload()               — builds QR content string from form inputs
+  generateQR()               — main generation function
+  renderQRToCanvas(canvas, size, fg, bg) — rendering engine
+  downloadQR()               — saves PNG
+  copyQR()                   — copies to clipboard
+
+Auth:
+  doSignup()                 — creates account in localStorage
+  doLogin()                  — authenticates from localStorage
+  logout()                   — clears session
+  updateNav()                — toggles guest/user nav UI
+
+Rate Limiting:
+  checkRateLimit()           — checks 3/hour limit
+  recordGeneration()         — logs generation timestamp
+  updateUsageCounter(count)  — updates counter + banner text
+
+Settings:
+  openSettings()             — opens settings modal
+  exportData()               — downloads JSON export
+  confirmDeleteAccount()     — deletes account + history
+
+Cookie/Ads:
+  acceptCookies()            — saves consent, loads ads
+  declineCookies()           — saves refusal, no ads
+  loadAds()                  — injects AdSense ins elements
+
+----------------------------------------
+  7. WHAT NEEDS TO BE DONE NEXT
+----------------------------------------
+
+IMMEDIATE (before AdSense application):
+  [ ] Rename repo to "troj-1.github.io" on GitHub
+  [ ] Enable GitHub Pages (main branch, /root)
+  [ ] Verify site loads at https://troj-1.github.io/
+  [ ] Test all 14 QR types generate correctly
+  [ ] Test all 5 module styles + 3 corner styles
+  [ ] Test border styles (sharp, soft, rounded)
+  [ ] Test live preview (change colors/styles after generating)
+  [ ] Test cookie consent flow (accept/decline)
+  [ ] Test signup → unlimited generation → history → settings
+
+AFTER AdSense APPROVAL:
+  [ ] Get publisher ID (ca-pub-XXXXXXXXXXXXXXXX)
+  [ ] Uncomment AdSense <script> in index.html <head>
+  [ ] Replace ca-pub-XXXXXXXXXXXXXXXX with real ID (2 places)
+  [ ] Replace data-ad-slot="XXXXXXXXXX" with real slot IDs
+  [ ] Push to GitHub
+  [ ] Verify ads appear after cookie consent
+
+GROWTH / MARKETING:
+  [ ] Post on Reddit (r/smallbusiness, r/entrepreneur, r/QRcode)
+  [ ] Create Twitter/X account for QR Star
+  [ ] Write 2-3 SEO blog articles (can add later)
+  [ ] Submit sitemap to Google Search Console
+  [ ] Monitor analytics in localStorage
+
+FUTURE FEATURES (optional):
+  [ ] Bulk QR generation
+  [ ] QR code with logo/image in center
+  [ ] More border styles (double line, gradient)
+  [ ] Dark/light mode toggle
+  [ ] i18n / multi-language support
+
+----------------------------------------
+  8. KNOWN ISSUES / NOTES
+----------------------------------------
+
+- Auth is localStorage only — no real security, no email verification.
+  This is intentional: it's a data collection gate, not real auth.
+  Users get unlimited QR codes after signup, which is the incentive.
+
+- Password hash is simple (not bcrypt) — fine for localStorage-only
+  since there's no server to protect against.
+
+- AdSense approval may be harder on github.io subdomain vs custom
+  domain. If rejected, the user needs to find a way to get a domain
+  (free options: Freenom, or later when earning from ads).
+
+- The site works entirely offline after first load (all JS is local).
+
+- The qrcode.min.js library supports QR versions 1-40 with
+  error correction level M.
+
+- Canvas backgrounds (backgrounds.js) have 3 animated designs
+  that cycle. User can switch with bottom-left selector button.
+
+- The rendering engine draws finder patterns separately from data
+  modules to support custom corner styles. The white separator ring
+  around each finder pattern is explicitly drawn.
+
+- Rate limiting is per-browser (localStorage). Clearing browser
+  data resets the limit. This is acceptable for the use case.
+
+========================================
+  END OF DOCUMENTATION
+========================================
