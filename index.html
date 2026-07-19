@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Star — Free QR Code Generator</title>
+  <meta name="description" content="Free QR code generator with 14 types, custom styles, and instant download. Create QR codes for URLs, WhatsApp, WiFi, vCard, payments, and more.">
+  <meta property="og:title" content="QR Star — Free QR Code Generator">
+  <meta property="og:description" content="Free QR code generator with 14 types, custom styles, and instant download.">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="./">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "QR Star",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "description": "Free QR code generator with custom styles, 14 content types, and instant PNG download.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">QR Star</a>
+    <div class="nav-right">
+      <div id="nav-guest" class="nav-user">
+        <button class="nav-btn" onclick="openModal('login')">Log In</button>
+        <button class="nav-btn primary" onclick="openModal('signup')">Sign Up</button>
+      </div>
+      <div id="nav-user" class="nav-user" style="display:none">
+        <button class="nav-btn" onclick="toggleHistory()">History</button>
+        <button class="nav-btn" onclick="openSettings()">Settings</button>
+        <div class="nav-avatar" id="nav-avatar"></div>
+        <span class="nav-name" id="nav-name"></span>
+        <button class="nav-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>QR Code Generator</h1>
+    <p>14 types. Custom styles. Free forever.</p>
+  </section>
+
+  <div class="ad-slot ad-slot-hero"></div>
+
+  <!-- MAIN CARD -->
+  <main class="main-card">
+    <div class="card-inner">
+
+      <!-- TYPE GRID -->
+      <div class="type-grid" id="typeGrid">
+        <span class="type-category">Links</span>
+        <button class="type-card active" data-type="url" onclick="switchType('url')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          URL
+        </button>
+        <button class="type-card" data-type="whatsapp" onclick="switchType('whatsapp')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </button>
+        <button class="type-card" data-type="instagram" onclick="switchType('instagram')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </button>
+        <button class="type-card" data-type="tiktok" onclick="switchType('tiktok')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13.2a8.16 8.16 0 005.58 2.17V12a4.83 4.83 0 01-3.77-1.5V6.69h3.77z"/></svg>
+          TikTok
+        </button>
+        <button class="type-card" data-type="youtube" onclick="switchType('youtube')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          YouTube
+        </button>
+
+        <span class="type-category">Messages</span>
+        <button class="type-card" data-type="text" onclick="switchType('text')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Text
+        </button>
+        <button class="type-card" data-type="email" onclick="switchType('email')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </button>
+        <button class="type-card" data-type="sms" onclick="switchType('sms')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          SMS
+        </button>
+
+        <span class="type-category">Contact</span>
+        <button class="type-card" data-type="vcard" onclick="switchType('vcard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          vCard
+        </button>
+        <button class="type-card" data-type="location" onclick="switchType('location')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Location
+        </button>
+
+        <span class="type-category">Network</span>
+        <button class="type-card" data-type="wifi" onclick="switchType('wifi')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          WiFi
+        </button>
+
+        <span class="type-category">Payment</span>
+        <button class="type-card" data-type="paypal" onclick="switchType('paypal')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 2.1A.77.77 0 0 1 5.704 1.5h4.953c1.622 0 2.789.426 3.46 1.262.655.817.975 1.87.975 3.188 0 .942-.22 1.838-.67 2.677-.442.827-1.124 1.474-2.053 1.96-.858.449-1.872.676-3.072.676H7.526L7.076 21.337zM9.37 9.494h3.498c.882 0 1.532-.192 1.97-.588.438-.396.655-1.005.655-1.842 0-.903-.26-1.563-.793-1.998-.513-.42-1.224-.627-2.152-.627H9.736L9.37 9.494zm-.206 7.696h3.774c.96 0 1.689-.216 2.206-.66.517-.445.772-1.088.772-1.945 0-.768-.234-1.373-.714-1.837-.48-.464-1.154-.692-2.04-.692H9.37l-.206 5.134z"/></svg>
+          PayPal
+        </button>
+        <button class="type-card" data-type="bitcoin" onclick="switchType('bitcoin')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.638 14.904c-1.602 6.43-8.113 10.34-14.542 8.738-6.43-1.603-10.34-8.113-8.738-14.543C.966 2.671 9.074-1.24 15.5 0.364c6.43 1.604 10.34 8.113 8.738 14.542zm-6.43-3.89c.24-1.59-.974-2.45-2.64-3.02l.54-2.153-1.315-.33-.525 2.107c-.343-.086-.693-.167-1.04-.25l.53-2.127-1.32-.33-.54 2.165c-.286-.065-.566-.13-.842-.193l.001-.006-1.812-.45-.35 1.407s.975.22.955.234c.53.133.626.485.61.766l-.61 2.452c.037.009.084.024.135.045l-.136-.035-.856 3.43c-.064.16-.23.404-.599.312.013.02-.956-.238-.956-.238l-.655 1.506 1.707.425.93.233-.55 2.21 1.315.33.54-2.17c.356.094.703.18 1.046.264l-.54 2.16 1.32.33.55-2.206c2.274.43 3.996.26 4.722-1.815.586-1.667-.04-2.63-1.23-3.26.88-.207 1.543-.786 1.716-1.997zm-3.01 4.21c-.407 1.63-3.204.75-4.103.53l.732-2.94c.9.225 3.81.67 3.37 2.41zm.41-4.23c-.37 1.485-2.7.73-3.45.544l.66-2.65c.75.186 3.204.53 2.79 2.106z"/></svg>
+          Bitcoin
+        </button>
+
+        <span class="type-category">Event</span>
+        <button class="type-card" data-type="event" onclick="switchType('event')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Event
+        </button>
+      </div>
+
+      <!-- GENERATOR BODY -->
+      <div class="card-body">
+        <div class="form-panel">
+
+          <!-- URL -->
+          <div class="qr-form active" id="form-url">
+            <div class="form-group"><label>Website URL</label><input type="url" id="f-url" placeholder="https://example.com"></div>
+          </div>
+
+          <!-- WhatsApp -->
+          <div class="qr-form" id="form-whatsapp">
+            <div class="form-group"><label>Phone Number (with country code)</label><input type="tel" id="f-wa-phone" placeholder="+1234567890"></div>
+            <div class="form-group"><label>Message (optional)</label><textarea id="f-wa-msg" placeholder="Hello!"></textarea></div>
+          </div>
+
+          <!-- Instagram -->
+          <div class="qr-form" id="form-instagram">
+            <div class="form-group"><label>Username</label><input type="text" id="f-ig-user" placeholder="username"></div>
+          </div>
+
+          <!-- TikTok -->
+          <div class="qr-form" id="form-tiktok">
+            <div class="form-group"><label>Username</label><input type="text" id="f-tt-user" placeholder="username"></div>
+          </div>
+
+          <!-- YouTube -->
+          <div class="qr-form" id="form-youtube">
+            <div class="form-group"><label>Channel or Video URL</label><input type="url" id="f-yt-url" placeholder="https://youtube.com/@channel"></div>
+          </div>
+
+          <!-- Text -->
+          <div class="qr-form" id="form-text">
+            <div class="form-group"><label>Text Content</label><textarea id="f-text" placeholder="Enter your text here"></textarea></div>
+          </div>
+
+          <!-- Email -->
+          <div class="qr-form" id="form-email">
+            <div class="form-group"><label>To</label><input type="email" id="f-em-to" placeholder="recipient@example.com"></div>
+            <div class="form-group"><label>Subject</label><input type="text" id="f-em-subj" placeholder="Subject"></div>
+            <div class="form-group"><label>Body</label><textarea id="f-em-body" placeholder="Message body"></textarea></div>
+          </div>
+
+          <!-- SMS -->
+          <div class="qr-form" id="form-sms">
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="f-sms-to" placeholder="+1234567890"></div>
+            <div class="form-group"><label>Message</label><textarea id="f-sms-body" placeholder="Your message"></textarea></div>
+          </div>
+
+          <!-- vCard -->
+          <div class="qr-form" id="form-vcard">
+            <div class="form-group"><label>Full Name</label><input type="text" id="f-vc-name" placeholder="John Doe"></div>
+            <div class="form-group"><label>Phone</label><input type="tel" id="f-vc-phone" placeholder="+1234567890"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="f-vc-email" placeholder="john@example.com"></div>
+            <div class="form-group"><label>Organization</label><input type="text" id="f-vc-org" placeholder="Company Inc."></div>
+            <div class="form-group"><label>Address</label><input type="text" id="f-vc-addr" placeholder="123 Main St, City"></div>
+            <div class="form-group"><label>Website</label><input type="url" id="f-vc-web" placeholder="https://example.com"></div>
+          </div>
+
+          <!-- Location -->
+          <div class="qr-form" id="form-location">
+            <div class="form-group"><label>Address</label><input type="text" id="f-loc-addr" placeholder="123 Main St, New York, NY"></div>
+            <div class="form-group"><label>Or Coordinates</label><input type="text" id="f-loc-coords" placeholder="40.7128, -74.0060"></div>
+          </div>
+
+          <!-- WiFi -->
+          <div class="qr-form" id="form-wifi">
+            <div class="form-group"><label>Network Name (SSID)</label><input type="text" id="f-wifi-ssid" placeholder="MyNetwork"></div>
+            <div class="form-group"><label>Password</label><input type="text" id="f-wifi-pass" placeholder="Password"></div>
+            <div class="form-group"><label>Encryption</label>
+              <select id="f-wifi-enc">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">None</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- PayPal -->
+          <div class="qr-form" id="form-paypal">
+            <div class="form-group"><label>PayPal Username</label><input type="text" id="f-pp-user" placeholder="yourusername"></div>
+            <div class="form-group"><label>Amount (optional)</label><input type="number" id="f-pp-amount" placeholder="10.00" step="0.01" min="0"></div>
+          </div>
+
+          <!-- Bitcoin -->
+          <div class="qr-form" id="form-bitcoin">
+            <div class="form-group"><label>Bitcoin Address</label><input type="text" id="f-btc-addr" placeholder="bc1q..."></div>
+            <div class="form-group"><label>Amount in BTC (optional)</label><input type="number" id="f-btc-amount" placeholder="0.001" step="0.00000001" min="0"></div>
+          </div>
+
+          <!-- Event -->
+          <div class="qr-form" id="form-event">
+            <div class="form-group"><label>Event Title</label><input type="text" id="f-ev-title" placeholder="Birthday Party"></div>
+            <div class="form-group"><label>Start</label><input type="datetime-local" id="f-ev-start"></div>
+            <div class="form-group"><label>End</label><input type="datetime-local" id="f-ev-end"></div>
+            <div class="form-group"><label>Location</label><input type="text" id="f-ev-loc" placeholder="123 Main St"></div>
+            <div class="form-group"><label>Description</label><textarea id="f-ev-desc" placeholder="Event details"></textarea></div>
+          </div>
+
+          <!-- COMMON: COLORS + SIZE -->
+          <div class="color-row">
+            <div class="color-pick"><input type="color" id="fg-color" value="#000000" title="Foreground"></div>
+            <div class="color-pick"><input type="color" id="bg-color" value="#ffffff" title="Background"></div>
+            <div class="size-select">
+              <select id="qr-size">
+                <option value="200">200px</option>
+                <option value="300" selected>300px</option>
+                <option value="400">400px</option>
+                <option value="600">600px</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- DESIGN: MODULE STYLE -->
+          <div class="form-group">
+            <label>Module Style</label>
+            <div class="style-options" id="moduleStyles">
+              <button class="style-opt active" data-style="square" onclick="setModuleStyle('square')" title="Square">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="currentColor"/></svg>
+              </button>
+              <button class="style-opt" data-style="rounded" onclick="setModuleStyle('rounded')" title="Rounded">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4" fill="currentColor"/></svg>
+              </button>
+              <button class="style-opt" data-style="dots" onclick="setModuleStyle('dots')" title="Dots">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>
+              </button>
+              <button class="style-opt" data-style="extra-rounded" onclick="setModuleStyle('extra-rounded')" title="Extra Rounded">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="7" fill="currentColor"/></svg>
+              </button>
+              <button class="style-opt" data-style="diamond" onclick="setModuleStyle('diamond')" title="Diamond">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="currentColor" transform="rotate(45 12 12)"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- DESIGN: CORNER STYLE -->
+          <div class="form-group">
+            <label>Finder Corner Style</label>
+            <div class="style-options" id="cornerStyles">
+              <button class="style-opt active" data-style="square" onclick="setCornerStyle('square')" title="Square">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" fill="currentColor"/><rect x="6" y="6" width="12" height="12" fill="var(--bg)"/><rect x="9" y="9" width="6" height="6" fill="currentColor"/></svg>
+              </button>
+              <button class="style-opt" data-style="rounded" onclick="setCornerStyle('rounded')" title="Rounded">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/><rect x="6" y="6" width="12" height="12" rx="2" fill="var(--bg)"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+              </button>
+              <button class="style-opt" data-style="dot" onclick="setCornerStyle('dot')" title="Dot">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><circle cx="12" cy="12" r="6" fill="var(--bg)"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- BORDER -->
+          <div class="form-group">
+            <label>Border</label>
+            <div class="outline-row">
+              <label class="outline-toggle">
+                <input type="checkbox" id="outline-toggle" onchange="toggleOutline()">
+                Enable
+              </label>
+              <div class="color-pick" id="outline-color-wrap" style="display:none">
+                <input type="color" id="outline-color" value="#000000" title="Border Color">
+              </div>
+            </div>
+          </div>
+          <div class="form-group" id="border-thickness-wrap" style="display:none">
+            <label>Thickness <span id="thickness-val">10px</span></label>
+            <input type="range" id="border-thickness" min="1" max="50" value="10" oninput="updateThickness()">
+          </div>
+          <div class="form-group" id="border-style-wrap" style="display:none">
+            <label>Border Style</label>
+            <div class="style-options" id="borderStyles">
+              <button class="style-opt active" data-style="sharp" onclick="setBorderStyle('sharp')" title="Sharp">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+              </button>
+              <button class="style-opt" data-style="soft" onclick="setBorderStyle('soft')" title="Soft">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+              </button>
+              <button class="style-opt" data-style="rounded" onclick="setBorderStyle('rounded')" title="Rounded">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- USAGE COUNTER -->
+          <div class="usage-counter" id="usage-counter" style="display:none">
+            <span id="usage-text"></span>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-generate" onclick="generateQR()">Generate QR Code</button>
+            <button class="btn-download" id="btn-dl" onclick="downloadQR()" style="display:none">Download PNG</button>
+            <button class="btn-copy" id="btn-cp" onclick="copyQR()" style="display:none">Copy</button>
+          </div>
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="preview-panel">
+          <div class="preview-placeholder" id="preview-placeholder">QR</div>
+          <div class="preview-canvas-wrap" id="preview-wrap">
+            <canvas id="qr-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- USAGE BANNER (for anonymous users) -->
+  <div class="usage-banner" id="usage-banner" style="display:none">
+    <div class="usage-banner-inner">
+      <span id="banner-text"></span>
+      <a onclick="openModal('signup')">Sign up free for unlimited &#8594;</a>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <h2>Why QR Star</h2>
+    <div class="features-grid">
+      <div class="feature-item"><h3>14 Content Types</h3><p>URL, WhatsApp, Instagram, TikTok, YouTube, Text, Email, SMS, vCard, Location, WiFi, PayPal, Bitcoin, and Events.</p></div>
+      <div class="feature-item"><h3>5 Design Styles</h3><p>Square, Rounded, Dots, Extra Rounded, and Diamond module patterns.</p></div>
+      <div class="feature-item"><h3>Custom Colors</h3><p>Pick any foreground, background, and border color. Match your brand perfectly.</p></div>
+      <div class="feature-item"><h3>High Resolution</h3><p>Export up to 600x600 pixels. Crisp QR codes that scan at any size.</p></div>
+      <div class="feature-item"><h3>Instant Download</h3><p>Save as PNG with one click. Copy directly to clipboard.</p></div>
+      <div class="feature-item"><h3>QR History</h3><p>Sign up free to save and browse your past QR codes.</p></div>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-footer"></div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </div>
+    &copy; 2026 QR Star. All rights reserved.
+  </footer>
+
+  <!-- SIGNUP MODAL -->
+  <div class="modal-overlay" id="modal-signup">
+    <div class="modal">
+      <h2>Create Account</h2>
+      <div class="form-group"><label>Name</label><input type="text" id="signup-name" placeholder="Your name"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="signup-email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="signup-pass" placeholder="Password (min 6 chars)"></div>
+      <div class="form-group">
+        <label>How did you find us?</label>
+        <select id="signup-source">
+          <option value="">Select...</option>
+          <option value="google">Google Search</option>
+          <option value="social">Social Media</option>
+          <option value="friend">Friend / Colleague</option>
+          <option value="blog">Blog / Article</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="outline-toggle">
+          <input type="checkbox" id="signup-newsletter" checked>
+          Send me QR tips &amp; product updates
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-generate" onclick="doSignup()">Sign Up</button>
+        <button class="modal-close" onclick="closeModals()">Cancel</button>
+      </div>
+      <div class="modal-switch">Already have an account? <a onclick="openModal('login')">Log In</a></div>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="modal-login">
+    <div class="modal">
+      <h2>Log In</h2>
+      <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Password"></div>
+      <div class="modal-actions">
+        <button class="btn-generate" onclick="doLogin()">Log In</button>
+        <button class="modal-close" onclick="closeModals()">Cancel</button>
+      </div>
+      <div class="modal-switch">Don't have an account? <a onclick="openModal('signup')">Sign Up</a></div>
+    </div>
+  </div>
+
+  <!-- RATE LIMIT MODAL -->
+  <div class="modal-overlay" id="modal-ratelimit">
+    <div class="modal modal-rate-limit">
+      <div class="modal-icon">&#9889;</div>
+      <h2>Free Limit Reached</h2>
+      <p>You've used all 3 free QR codes this hour.</p>
+      <div class="rate-limit-features">
+        <div class="rl-feature"><span>&#10003;</span> Unlimited QR codes</div>
+        <div class="rl-feature"><span>&#10003;</span> Save your generation history</div>
+        <div class="rl-feature"><span>&#10003;</span> No ads for signed-up users</div>
+        <div class="rl-feature"><span>&#10003;</span> Export your data anytime</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-generate" onclick="closeModals(); openModal('signup');">Sign Up Free</button>
+        <button class="modal-close" onclick="closeModals()">Maybe Later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY PANEL -->
+  <div class="history-backdrop" id="hist-backdrop" onclick="toggleHistory()"></div>
+  <div class="history-panel" id="hist-panel">
+    <div class="history-header">
+      <h3>History</h3>
+      <button class="history-close" onclick="toggleHistory()">&times;</button>
+    </div>
+    <div class="history-list" id="hist-list"></div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="modal-settings">
+    <div class="modal">
+      <h2>Account Settings</h2>
+      <div id="settings-info">
+        <div class="form-group"><label>Name</label><input type="text" id="settings-name" readonly></div>
+        <div class="form-group"><label>Email</label><input type="email" id="settings-email" readonly></div>
+      </div>
+      <div class="settings-section">
+        <h4>Data Management</h4>
+        <div class="settings-actions">
+          <button class="btn-secondary" onclick="exportData()">Export My Data</button>
+          <button class="btn-danger" onclick="confirmDeleteAccount()">Delete Account</button>
+        </div>
+        <p style="font-size:11px; color:#555; margin-top:10px;">Export downloads a JSON file with your account info and QR history. Deletion is permanent and cannot be undone.</p>
+      </div>
+      <div class="modal-actions" style="margin-top:20px">
+        <button class="modal-close" onclick="closeModals()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/backgrounds.js"></script>
+  <script>
+  var currentType = 'url';
+  var currentUser = null;
+  var moduleStyle = 'square';
+  var cornerStyle = 'square';
+  var borderStyle = 'sharp';
+  var qrGenerated = false;
+
+  // --- RATE LIMITING ---
+  function getGenTimestamps() { try { return JSON.parse(localStorage.getItem('qrc-gen-ts')) || []; } catch(e) { return []; } }
+  function cleanOldTimestamps(ts) {
+    var now = Date.now(), hour = 3600000, fresh = [];
+    for (var i = 0; i < ts.length; i++) { if (now - ts[i] < hour) fresh.push(ts[i]); }
+    return fresh;
+  }
+  function checkRateLimit() {
+    if (currentUser) return true;
+    var ts = cleanOldTimestamps(getGenTimestamps());
+    localStorage.setItem('qrc-gen-ts', JSON.stringify(ts));
+    updateUsageCounter(ts.length);
+    if (ts.length >= 3) { openModal('ratelimit'); return false; }
+    return true;
+  }
+  function recordGeneration() {
+    if (currentUser) return;
+    var ts = getGenTimestamps(); ts.push(Date.now());
+    ts = cleanOldTimestamps(ts);
+    localStorage.setItem('qrc-gen-ts', JSON.stringify(ts));
+    updateUsageCounter(ts.length);
+  }
+  function updateUsageCounter(count) {
+    var el = document.getElementById('usage-counter'), txt = document.getElementById('usage-text');
+    var banner = document.getElementById('usage-banner'), bannerTxt = document.getElementById('banner-text');
+    if (currentUser) {
+      el.style.display = 'none';
+      banner.style.display = 'none';
+      return;
+    }
+    var remaining = 3 - count;
+    el.style.display = '';
+    txt.innerHTML = '<strong>' + count + '/3</strong> free QR codes this hour';
+    if (remaining > 0 && count > 0) {
+      banner.style.display = '';
+      bannerTxt.innerHTML = '<strong>' + remaining + ' free QR code' + (remaining > 1 ? 's' : '') + ' left</strong> this hour — sign up for unlimited generation';
+    } else if (remaining <= 0) {
+      banner.style.display = '';
+      bannerTxt.innerHTML = '<strong>Free limit reached</strong> — sign up for unlimited QR codes, history, and no ads';
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
+  // --- ANALYTICS ---
+  function trackEvent(type, data) {
+    try {
+      var log = JSON.parse(localStorage.getItem('qrc-analytics') || '[]');
+      log.push({ type: type, data: data, time: Date.now() });
+      if (log.length > 200) log = log.slice(-200);
+      localStorage.setItem('qrc-analytics', JSON.stringify(log));
+    } catch(e) {}
+  }
+
+  // --- AUTH ---
+  function getUsers() { try { return JSON.parse(localStorage.getItem('qrc-users')) || {}; } catch(e) { return {}; } }
+  function saveUsers(u) { localStorage.setItem('qrc-users', JSON.stringify(u)); }
+  function hashStr(s) { var h = 0; for (var i = 0; i < s.length; i++) { h = ((h << 5) - h + s.charCodeAt(i)) | 0; } return 'h_' + Math.abs(h).toString(36); }
+  function getSession() { try { return JSON.parse(localStorage.getItem('qrc-user')); } catch(e) { return null; } }
+  function setSession(u) { if (u) localStorage.setItem('qrc-user', JSON.stringify(u)); else localStorage.removeItem('qrc-user'); }
+  function updateNav() {
+    currentUser = getSession();
+    var g = document.getElementById('nav-guest'), u = document.getElementById('nav-user');
+    if (currentUser) {
+      g.style.display = 'none'; u.style.display = 'flex';
+      document.getElementById('nav-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
+      document.getElementById('nav-name').textContent = currentUser.name;
+    } else { g.style.display = 'flex'; u.style.display = 'none'; }
+    updateUsageCounter(currentUser ? 0 : cleanOldTimestamps(getGenTimestamps()).length);
+  }
+  function doSignup() {
+    var name = document.getElementById('signup-name').value.trim();
+    var email = document.getElementById('signup-email').value.trim().toLowerCase();
+    var pass = document.getElementById('signup-pass').value;
+    var source = document.getElementById('signup-source').value;
+    var newsletter = document.getElementById('signup-newsletter').checked;
+    if (!name || !email || !pass) { toast('Fill in all fields'); return; }
+    if (pass.length < 6) { toast('Password must be at least 6 characters'); return; }
+    var users = getUsers();
+    if (users[email]) { toast('Email already registered'); return; }
+    users[email] = { name: name, pass: hashStr(pass), source: source || '', newsletter: newsletter, joined: Date.now() };
+    saveUsers(users); setSession({ name: name, email: email });
+    closeModals(); updateNav(); trackEvent('signup', { source: source }); toast('Account created');
+  }
+  function doLogin() {
+    var email = document.getElementById('login-email').value.trim().toLowerCase();
+    var pass = document.getElementById('login-pass').value;
+    if (!email || !pass) { toast('Fill in all fields'); return; }
+    var users = getUsers();
+    if (!users[email] || users[email].pass !== hashStr(pass)) { toast('Invalid credentials'); return; }
+    setSession({ name: users[email].name, email: email }); closeModals(); updateNav(); toast('Logged in');
+  }
+  function logout() { setSession(null); updateNav(); toast('Logged out'); }
+
+  // --- MODALS ---
+  function openModal(type) { closeModals(); var el = document.getElementById('modal-' + type); if (el) el.classList.add('open'); }
+  function closeModals() { document.querySelectorAll('.modal-overlay').forEach(function(m) { m.classList.remove('open'); }); }
+  document.addEventListener('click', function(e) { if (e.target.classList && e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeModals(); var p = document.getElementById('hist-panel'); if (p.classList.contains('open')) toggleHistory(); } });
+
+  // --- TYPE SWITCHING ---
+  function switchType(type) {
+    currentType = type;
+    document.querySelectorAll('.type-card').forEach(function(c) { c.classList.toggle('active', c.getAttribute('data-type') === type); });
+    document.querySelectorAll('.qr-form').forEach(function(f) { f.classList.remove('active'); });
+    var form = document.getElementById('form-' + type);
+    if (form) form.classList.add('active');
+    livePreview();
+  }
+
+  // --- DESIGN STYLES ---
+  function setModuleStyle(s) {
+    moduleStyle = s;
+    document.querySelectorAll('#moduleStyles .style-opt').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-style') === s); });
+    livePreview();
+  }
+  function setCornerStyle(s) {
+    cornerStyle = s;
+    document.querySelectorAll('#cornerStyles .style-opt').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-style') === s); });
+    livePreview();
+  }
+
+  // --- OUTLINE ---
+  function toggleOutline() {
+    var on = document.getElementById('outline-toggle').checked;
+    document.getElementById('outline-color-wrap').style.display = on ? '' : 'none';
+    document.getElementById('border-thickness-wrap').style.display = on ? '' : 'none';
+    document.getElementById('border-style-wrap').style.display = on ? '' : 'none';
+    livePreview();
+  }
+  function setBorderStyle(s) {
+    borderStyle = s;
+    document.querySelectorAll('#borderStyles .style-opt').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-style') === s); });
+    livePreview();
+  }
+  function updateThickness() {
+    document.getElementById('thickness-val').textContent = document.getElementById('border-thickness').value + 'px';
+  }
+
+  // --- LIVE PREVIEW (design changes only) ---
+  function livePreview() {
+    if (!qrGenerated) return;
+    var size = parseInt(document.getElementById('qr-size').value, 10);
+    var fg = document.getElementById('fg-color').value;
+    var bg = document.getElementById('bg-color').value;
+    var canvas = document.getElementById('qr-canvas');
+    renderQRToCanvas(canvas, size, fg, bg);
+  }
+
+  // --- PAYLOAD BUILDERS ---
+  function getPayload() {
+    switch (currentType) {
+      case 'url': return document.getElementById('f-url').value.trim();
+      case 'whatsapp': {
+        var ph = document.getElementById('f-wa-phone').value.trim();
+        var msg = document.getElementById('f-wa-msg').value.trim();
+        if (!ph) return '';
+        return 'https://wa.me/' + ph.replace(/[^0-9]/g, '') + (msg ? '?text=' + encodeURIComponent(msg) : '');
+      }
+      case 'instagram': { var u = document.getElementById('f-ig-user').value.trim(); return u ? 'https://instagram.com/' + u.replace(/^@/, '') : ''; }
+      case 'tiktok': { var u = document.getElementById('f-tt-user').value.trim(); return u ? 'https://tiktok.com/@' + u.replace(/^@/, '') : ''; }
+      case 'youtube': return document.getElementById('f-yt-url').value.trim();
+      case 'text': return document.getElementById('f-text').value.trim();
+      case 'email': {
+        var to = document.getElementById('f-em-to').value.trim();
+        var sub = document.getElementById('f-em-subj').value.trim();
+        var body = document.getElementById('f-em-body').value.trim();
+        if (!to) return '';
+        var em = 'mailto:' + to; var parts = [];
+        if (sub) parts.push('subject=' + encodeURIComponent(sub));
+        if (body) parts.push('body=' + encodeURIComponent(body));
+        return parts.length ? em + '?' + parts.join('&') : em;
+      }
+      case 'sms': {
+        var num = document.getElementById('f-sms-to').value.trim();
+        var msg = document.getElementById('f-sms-body').value.trim();
+        if (!num) return '';
+        return 'sms:' + num + (msg ? '?body=' + encodeURIComponent(msg) : '');
+      }
+      case 'vcard': {
+        var n = document.getElementById('f-vc-name').value.trim();
+        var ph = document.getElementById('f-vc-phone').value.trim();
+        var em = document.getElementById('f-vc-email').value.trim();
+        var org = document.getElementById('f-vc-org').value.trim();
+        var addr = document.getElementById('f-vc-addr').value.trim();
+        var web = document.getElementById('f-vc-web').value.trim();
+        if (!n) return '';
+        var v = 'BEGIN:VCARD\nVERSION:3.0\nFN:' + n;
+        if (ph) v += '\nTEL:' + ph;
+        if (em) v += '\nEMAIL:' + em;
+        if (org) v += '\nORG:' + org;
+        if (addr) v += '\nADR:;;' + addr + ';;;';
+        if (web) v += '\nURL:' + web;
+        v += '\nEND:VCARD'; return v;
+      }
+      case 'location': {
+        var addr = document.getElementById('f-loc-addr').value.trim();
+        var coords = document.getElementById('f-loc-coords').value.trim();
+        if (coords) {
+          var parts = coords.split(',').map(function(s) { return s.trim(); });
+          if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) return 'https://maps.google.com/?q=' + parts[0] + ',' + parts[1];
+        }
+        if (addr) return 'https://maps.google.com/?q=' + encodeURIComponent(addr);
+        return '';
+      }
+      case 'wifi': {
+        var ssid = document.getElementById('f-wifi-ssid').value.trim();
+        var pass = document.getElementById('f-wifi-pass').value;
+        var enc = document.getElementById('f-wifi-enc').value;
+        if (!ssid) return '';
+        return 'WIFI:T:' + enc + ';S:' + ssid + ';P:' + pass + ';;';
+      }
+      case 'paypal': {
+        var user = document.getElementById('f-pp-user').value.trim();
+        var amt = document.getElementById('f-pp-amount').value;
+        if (!user) return '';
+        return 'https://paypal.me/' + user + (amt ? '/' + amt : '');
+      }
+      case 'bitcoin': {
+        var addr = document.getElementById('f-btc-addr').value.trim();
+        var amt = document.getElementById('f-btc-amount').value;
+        if (!addr) return '';
+        return 'bitcoin:' + addr + (amt ? '?amount=' + amt : '');
+      }
+      case 'event': {
+        var title = document.getElementById('f-ev-title').value.trim();
+        var start = document.getElementById('f-ev-start').value;
+        var end = document.getElementById('f-ev-end').value;
+        var loc = document.getElementById('f-ev-loc').value.trim();
+        var desc = document.getElementById('f-ev-desc').value.trim();
+        if (!title || !start) return '';
+        function fmtDT(v) { return v ? v.replace(/[-:]/g, '').replace('T', 'T') + '00' : ''; }
+        var ev = 'BEGIN:VEVENT\nSUMMARY:' + title;
+        ev += '\nDTSTART:' + fmtDT(start);
+        if (end) ev += '\nDTEND:' + fmtDT(end);
+        if (loc) ev += '\nLOCATION:' + loc;
+        if (desc) ev += '\nDESCRIPTION:' + desc;
+        ev += '\nEND:VEVENT'; return ev;
+      }
+      default: return '';
+    }
+  }
+
+  // --- QR RENDERING ENGINE ---
+  function isFinderPattern(r, c, modCount) {
+    if (r < 7 && c < 7) return true;
+    if (r < 7 && c >= modCount - 7) return true;
+    if (r >= modCount - 7 && c < 7) return true;
+    return false;
+  }
+
+  function drawRoundedRect(ctx, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawSingleModule(ctx, x, y, s, style) {
+    var r, cx, cy;
+    switch (style) {
+      case 'rounded':
+        r = s * 0.3;
+        drawRoundedRect(ctx, x, y, s, s, r);
+        break;
+      case 'dots':
+        cx = x + s / 2; cy = y + s / 2;
+        ctx.beginPath(); ctx.arc(cx, cy, s * 0.45, 0, Math.PI * 2); ctx.fill();
+        break;
+      case 'extra-rounded':
+        r = s * 0.6;
+        drawRoundedRect(ctx, x, y, s, s, r);
+        break;
+      case 'diamond':
+        cx = x + s / 2; cy = y + s / 2;
+        ctx.save(); ctx.translate(cx, cy); ctx.rotate(Math.PI / 4);
+        ctx.fillRect(-s * 0.35, -s * 0.35, s * 0.7, s * 0.7);
+        ctx.restore();
+        break;
+      default:
+        ctx.fillRect(x, y, s, s);
+    }
+  }
+
+  function renderQRToCanvas(canvas, size, fg, bg) {
+    var payload = getPayload();
+    if (!payload) return false;
+
+    var borderEnabled = document.getElementById('outline-toggle').checked;
+    var borderColor = document.getElementById('outline-color').value;
+    var borderWidth = borderEnabled ? parseInt(document.getElementById('border-thickness').value, 10) : 0;
+    var qrArea = size - borderWidth * 2;
+
+    canvas.width = size;
+    canvas.height = size;
+    var ctx = canvas.getContext('2d');
+
+    ctx.clearRect(0, 0, size, size);
+
+    if (borderEnabled && borderWidth > 0) {
+      var bRad;
+      switch (borderStyle) {
+        case 'soft': bRad = borderWidth * 0.3; break;
+        case 'rounded': bRad = borderWidth * 0.7; break;
+        default: bRad = 0;
+      }
+      if (bRad > 0) {
+        ctx.fillStyle = borderColor;
+        drawRoundedRect(ctx, 0, 0, size, size, bRad);
+        var innerRad = Math.max(0, bRad - borderWidth);
+        ctx.fillStyle = bg;
+        drawRoundedRect(ctx, borderWidth, borderWidth, qrArea, qrArea, innerRad);
+      } else {
+        ctx.fillStyle = borderColor;
+        ctx.fillRect(0, 0, size, size);
+        ctx.fillStyle = bg;
+        ctx.fillRect(borderWidth, borderWidth, qrArea, qrArea);
+      }
+    } else {
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, size, size);
+    }
+
+    var qr = qrcode(0, 'M');
+    qr.addData(payload);
+    qr.make();
+    var modCount = qr.getModuleCount();
+    var modSize = Math.floor(qrArea / modCount);
+    var offset = borderWidth + Math.floor((qrArea - modSize * modCount) / 2);
+
+    ctx.fillStyle = bg;
+    ctx.fillRect(offset, offset, modCount * modSize, modCount * modSize);
+
+    // Pass 1: Draw all non-finder data modules
+    for (var r = 0; r < modCount; r++) {
+      for (var c = 0; c < modCount; c++) {
+        if (isFinderPattern(r, c, modCount)) continue;
+        if (qr.isDark(r, c)) {
+          ctx.fillStyle = fg;
+          drawSingleModule(ctx, offset + c * modSize, offset + r * modSize, modSize, moduleStyle);
+        }
+      }
+    }
+
+    // Pass 2: Draw finder patterns with white separator ring
+    var finderAreas = [
+      [0, 0],
+      [0, modCount - 7],
+      [modCount - 7, 0]
+    ];
+
+    for (var fi = 0; fi < finderAreas.length; fi++) {
+      var sr = finderAreas[fi][0];
+      var sc = finderAreas[fi][1];
+
+      // Clear 1-cell white ring around finder pattern
+      ctx.fillStyle = bg;
+      for (var dr = -1; dr <= 7; dr++) {
+        for (var dc = -1; dc <= 7; dc++) {
+          if (dr >= 0 && dr <= 6 && dc >= 0 && dc <= 6) continue;
+          var cr = sr + dr, cc = sc + dc;
+          if (cr >= 0 && cr < modCount && cc >= 0 && cc < modCount && !isFinderPattern(cr, cc, modCount)) {
+            ctx.fillRect(offset + cc * modSize, offset + cr * modSize, modSize, modSize);
+          }
+        }
+      }
+
+      // Draw the 7x7 finder pattern
+      for (var dr = 0; dr < 7; dr++) {
+        for (var dc = 0; dc < 7; dc++) {
+          var isOuter = (dr === 0 || dr === 6 || dc === 0 || dc === 6);
+          var isInner = (dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4);
+          var dark = isOuter || isInner;
+          var x = offset + (sc + dc) * modSize;
+          var y = offset + (sr + dr) * modSize;
+
+          if (dark) {
+            ctx.fillStyle = fg;
+            if (cornerStyle === 'dot') {
+              var cx = x + modSize / 2, cy = y + modSize / 2;
+              ctx.beginPath(); ctx.arc(cx, cy, modSize * 0.45, 0, Math.PI * 2); ctx.fill();
+            } else if (cornerStyle === 'rounded') {
+              drawRoundedRect(ctx, x, y, modSize, modSize, modSize * 0.3);
+            } else {
+              ctx.fillRect(x, y, modSize + 0.5, modSize + 0.5);
+            }
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // --- GENERATE ---
+  function generateQR() {
+    var payload = getPayload();
+    if (!payload) { toast('Enter content first'); return; }
+    if (!checkRateLimit()) return;
+
+    var size = parseInt(document.getElementById('qr-size').value, 10);
+    var fg = document.getElementById('fg-color').value;
+    var bg = document.getElementById('bg-color').value;
+    var canvas = document.getElementById('qr-canvas');
+    if (!renderQRToCanvas(canvas, size, fg, bg)) return;
+
+    qrGenerated = true;
+    document.getElementById('preview-placeholder').style.display = 'none';
+    document.getElementById('preview-wrap').style.display = 'block';
+    document.getElementById('btn-dl').style.display = '';
+    document.getElementById('btn-cp').style.display = '';
+
+    recordGeneration();
+    trackEvent('generate', { type: currentType, style: moduleStyle, size: size });
+
+    if (currentUser) {
+      saveHistory({ img: canvas.toDataURL('image/png'), text: payload.substring(0, 120), type: currentType, time: Date.now() });
+    }
+    toast('QR code generated');
+  }
+
+  // --- DOWNLOAD / COPY ---
+  function downloadQR() {
+    var canvas = document.getElementById('qr-canvas');
+    var link = document.createElement('a');
+    link.download = 'qr-star-' + currentType + '-' + Date.now() + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    trackEvent('download', { type: currentType });
+    toast('Downloaded');
+  }
+  function copyQR() {
+    var canvas = document.getElementById('qr-canvas');
+    canvas.toBlob(function(blob) {
+      if (navigator.clipboard && navigator.clipboard.write) {
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(function() { toast('Copied to clipboard'); }, function() { toast('Copy failed'); });
+      } else { toast('Clipboard API not available'); }
+    }, 'image/png');
+  }
+
+  // --- HISTORY ---
+  function getHistory() { if (!currentUser) return []; try { return JSON.parse(localStorage.getItem('qrc-hist-' + currentUser.email)) || []; } catch(e) { return []; } }
+  function saveHistory(item) { if (!currentUser) return; var h = getHistory(); h.unshift(item); if (h.length > 50) h = h.slice(0, 50); localStorage.setItem('qrc-hist-' + currentUser.email, JSON.stringify(h)); }
+  function renderHistory() {
+    var list = document.getElementById('hist-list');
+    if (!currentUser) {
+      list.innerHTML = '<div class="history-empty">Sign in to view your QR code history.<br><br><button class="btn-generate" onclick="toggleHistory(); openModal(\'login\')" style="font-size:13px; padding:8px 18px;">Log In</button></div>';
+      return;
+    }
+    var h = getHistory();
+    if (!h.length) { list.innerHTML = '<div class="history-empty">No history yet. Generate a QR code to get started.</div>'; return; }
+    var html = '';
+    h.forEach(function(item) {
+      var d = new Date(item.time);
+      var timeStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      html += '<div class="history-item" onclick="loadHistoryItem(this)" data-img="' + item.img + '" data-type="' + item.type + '">'
+        + '<img src="' + item.img + '" alt="QR">'
+        + '<div class="history-item-info"><div class="text">' + escHtml(item.text) + '</div>'
+        + '<div class="meta">' + item.type.toUpperCase() + ' &middot; ' + timeStr + '</div></div></div>';
+    });
+    list.innerHTML = html;
+  }
+  function loadHistoryItem(el) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.getElementById('qr-canvas');
+      canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+      document.getElementById('preview-placeholder').style.display = 'none';
+      document.getElementById('preview-wrap').style.display = 'block';
+      document.getElementById('btn-dl').style.display = '';
+      document.getElementById('btn-cp').style.display = '';
+    };
+    img.src = el.getAttribute('data-img');
+    toggleHistory(); toast('Loaded from history');
+  }
+  function toggleHistory() {
+    var panel = document.getElementById('hist-panel'), backdrop = document.getElementById('hist-backdrop');
+    var open = panel.classList.toggle('open'); backdrop.classList.toggle('open', open);
+    if (open) renderHistory();
+  }
+
+  // --- TOAST ---
+  function toast(msg) {
+    var c = document.getElementById('toast-container'), t = document.createElement('div');
+    t.className = 'toast'; t.textContent = msg; c.appendChild(t);
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 3000);
+  }
+  function escHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  // --- SETTINGS / ACCOUNT MANAGEMENT ---
+  function openSettings() {
+    if (!currentUser) return;
+    document.getElementById('settings-name').value = currentUser.name;
+    document.getElementById('settings-email').value = currentUser.email;
+    openModal('settings');
+  }
+  function exportData() {
+    if (!currentUser) return;
+    var data = {
+      account: { name: currentUser.name, email: currentUser.email },
+      history: getHistory(),
+      exportDate: new Date().toISOString()
+    };
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var link = document.createElement('a');
+    link.download = 'qrstar-data-' + currentUser.email + '.json';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+    trackEvent('export_data', {});
+    toast('Data exported');
+  }
+  function confirmDeleteAccount() {
+    if (!currentUser) return;
+    if (confirm('Delete your account and all data? This cannot be undone.')) {
+      var users = getUsers();
+      delete users[currentUser.email];
+      saveUsers(users);
+      localStorage.removeItem('qrc-hist-' + currentUser.email);
+      setSession(null);
+      closeModals();
+      updateNav();
+      qrGenerated = false;
+      document.getElementById('preview-placeholder').style.display = '';
+      document.getElementById('preview-wrap').style.display = 'none';
+      document.getElementById('btn-dl').style.display = 'none';
+      document.getElementById('btn-cp').style.display = 'none';
+      trackEvent('delete_account', {});
+      toast('Account deleted');
+    }
+  }
+
+  // --- LIVE PREVIEW EVENT LISTENERS ---
+  (function() {
+    var designEls = ['fg-color', 'bg-color', 'qr-size', 'outline-color', 'border-thickness'];
+    designEls.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        var evt = (el.type === 'range' || el.type === 'color') ? 'input' : 'change';
+        el.addEventListener(evt, livePreview);
+      }
+    });
+  })();
+
+  updateNav();
+  </script>
+</body>
+</html>
